@@ -31,7 +31,10 @@ const App = () => {
 
   return (
     <View style={style.container}>
-      <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ alignItems: "center" }}
+      >
         <Text style={style.title}>Bienviendo a Task APP!!!</Text>
         {/* <View
         style={{
@@ -65,8 +68,37 @@ const App = () => {
           <Text>Dar un aplauso</Text>
         </Pressable>
         <Text>👏🏻 {claps}</Text>
-      </ScrollView>
 
+        <Text style={{ fontSize: 40 }}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias,
+          similique! Quia, quaerat tempora! Deleniti cupiditate numquam
+          dignissimos harum perspiciatis totam pariatur aliquid vitae omnis,
+          incidunt, labore porro! Veniam, dolorem magni.
+        </Text>
+      </ScrollView>
+      <View>
+        <ScrollView horizontal>
+          {[
+            "#22c55e",
+            "#22c",
+            "#ccc",
+            "#22c3",
+            "#22c55e",
+            "#22c",
+            "#ccc",
+            "#22c3",
+            "#22c55e",
+            "#22c",
+            "#ccc",
+            "#22c3",
+          ].map((color, i) => (
+            <View
+              key={i}
+              style={[style.box, { backgroundColor: color }]}
+            ></View>
+          ))}
+        </ScrollView>
+      </View>
       {/* <ScrollView>
         <Text>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias,
@@ -105,5 +137,12 @@ const style = StyleSheet.create({
   btn: {
     padding: 10,
     borderRadius: 5,
+  },
+  box: {
+    height: 100,
+    width: 100,
+    backgroundColor: "#22c55e",
+    borderRadius: 5,
+    marginRight: 10,
   },
 });
