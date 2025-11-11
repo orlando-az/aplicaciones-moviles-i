@@ -1,37 +1,45 @@
+import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
+  ListRenderItem,
   Pressable,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
+import { create, Task } from "../types/task";
+import TaskItem from "../components/TaskItem";
 
 const Index = () => {
   const [newTask, setNewTask] = useState("");
-  const [tasks, setTasks] = useState<string[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const handleAddTask = () => {
     if (newTask.trim() === "") {
       window.alert("La tarea no puede estar vacía");
       return;
     }
-    setTasks((prev) => [...prev, newTask]);
+    setTasks((prev) => [...prev, create(newTask)]);
     setNewTask("");
+  };
+
+  const handleDeleteTask = (index: number) => {
+    setTasks((prev) => prev.filter((_, i) => i !== index));
   };
 
   useEffect(() => {
     console.log(tasks);
   }, [tasks]);
 
-  const renderItem = ({ item, index }: { item: string; index: number }) => {
+  const renderItem: ListRenderItem<Task> = ({ item, index }) => {
     return (
-      <View style={styles.taskCard}>
-        <Text>
-          {index + 1}. {item}
-        </Text>
-      </View>
+      <TaskItem
+        task={item}
+        index={index}
+        onDelete={() => handleDeleteTask(index)}
+      />
     );
   };
 
@@ -39,6 +47,7 @@ const Index = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Bienvenido a Task APP!</Text>
       <Text style={styles.subtitle}>Lista de Tareas:</Text>
+
       <TextInput
         placeholder="Escribe tu tarea"
         placeholderTextColor={"#ccc"}
@@ -96,17 +105,5 @@ const styles = StyleSheet.create({
     bottom: 20,
     width: "90%",
     alignSelf: "center",
-  },
-  taskCard: {
-    padding: 15,
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    marginBottom: 10,
-    borderRadius: 5,
-    shadowRadius: 5,
-
-    elevation: 6,
   },
 });
