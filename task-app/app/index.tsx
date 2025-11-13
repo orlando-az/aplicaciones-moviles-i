@@ -15,6 +15,7 @@ import TaskItem from "../components/TaskItem";
 const Index = () => {
   const [newTask, setNewTask] = useState("");
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasksCompleted, setTasksCompleted] = useState<Task[]>([]);
 
   const handleAddTask = () => {
     if (newTask.trim() === "") {
@@ -29,6 +30,27 @@ const Index = () => {
     setTasks((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const handleToggleImportant = (id: string) => {
+    setTasks((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, important: !item.important } : item
+      )
+    );
+  };
+
+  const handleToggleDone = (id: string) => {
+    const taskDone = tasks.find((item) => item.id === id);
+    setTasks((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, done: !item.done } : item
+      )
+    );
+    if (taskDone) {
+      setTasksCompleted((prev) => [...prev, taskDone]);
+      setTasks((prev) => prev.filter((item) => item.id !== id));
+    }
+  };
+
   useEffect(() => {
     console.log(tasks);
   }, [tasks]);
@@ -39,6 +61,8 @@ const Index = () => {
         task={item}
         index={index}
         onDelete={() => handleDeleteTask(index)}
+        onToggleImportant={() => handleToggleImportant(item.id)}
+        onToggleDone={() => handleToggleDone(item.id)}
       />
     );
   };
@@ -59,6 +83,14 @@ const Index = () => {
       <FlatList
         showsHorizontalScrollIndicator={false}
         data={tasks}
+        renderItem={renderItem}
+        contentContainerStyle={{ paddingBottom: 80 }}
+      />
+
+      <FlatList
+        ListHeaderComponent={<Text>Tareas completadas</Text>}
+        showsHorizontalScrollIndicator={false}
+        data={tasksCompleted}
         renderItem={renderItem}
         contentContainerStyle={{ paddingBottom: 80 }}
       />
