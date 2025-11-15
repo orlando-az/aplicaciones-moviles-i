@@ -9,8 +9,8 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { create, Task } from "../types/task";
-import TaskItem from "../components/TaskItem";
+import { create, Task } from "../../types/task";
+import TaskItem from "../../components/TaskItem";
 
 const Index = () => {
   const [newTask, setNewTask] = useState("");

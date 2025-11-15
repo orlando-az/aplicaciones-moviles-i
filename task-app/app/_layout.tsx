@@ -1,19 +1,32 @@
 import { Stack } from "expo-router";
+import "../global.css";
+import { Text } from "react-native";
 
 const RootLayout = () => {
   return (
-    <Stack
-      screenOptions={{
-        headerShadowVisible: false,
-        headerStyle: {
-          backgroundColor: "#22c55e",
-        },
-      }}
-    >
+    // <Stack
+    //   screenOptions={{
+    //     headerShadowVisible: false,
+    //     headerStyle: {
+    //       backgroundColor: "#22c55e",
+    //     },
+    //   }}
+    // >
+    //   <Stack.Screen
+    //     name="index"
+    //     options={{
+    //       title: "Task APP",
+    //     }}
+    //   />
+    // </Stack>
+    <Stack>
       <Stack.Screen
-        name="index"
+        name="(tabs)"
         options={{
-          title: "Task APP",
+          headerTitle: () => (
+            <Text className="text-2xl text-green-500 font-bold">TASK APP</Text>
+          ),
+          headerShadowVisible: false,
         }}
       />
     </Stack>
