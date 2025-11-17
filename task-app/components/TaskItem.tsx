@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -20,31 +20,37 @@ const TaskItem = ({
   onToggleDone,
 }: ItemTaskProps) => {
   return (
-    <View style={styles.taskCard}>
-      <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+    <View className="p-4 bg-white mb-3 rounded-md shadow-md flex-row justify-between items-center">
+      <View className="flex-row items-center gap-3">
         <Pressable onPress={onToggleDone}>
-          <FontAwesome name="circle-thin" size={20} color={"#22c55e"} />
+          {task.done ? (
+            <FontAwesome name="check-circle" size={20} color="#22c55e" />
+          ) : (
+            <FontAwesome name="circle-thin" size={20} color="#22c55e" />
+          )}
         </Pressable>
-        <Text>
+
+        <Text
+          className={task.done ? "line-through text-gray-500" : "text-black"}
+        >
           {index + 1}. {task.text}
         </Text>
       </View>
-      <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+
+      <View className="flex-row items-center gap-3">
         <Pressable
           onLongPress={onDelete}
           delayLongPress={1000}
-          style={({ pressed }) => [
-            styles.btnDelete,
-            pressed && styles.btnPressed,
-          ]}
+          className="p-2 bg-white rounded-full"
         >
-          <Ionicons name="trash" size={20} color={"red"} />
+          <Ionicons name="trash" size={20} color="red" />
         </Pressable>
+
         <Pressable onPress={onToggleImportant}>
-          {task.important === true ? (
-            <Ionicons name="star" size={20} color={"blue"} />
+          {task.important ? (
+            <Ionicons name="star" size={20} color="blue" />
           ) : (
-            <Ionicons name="star-outline" size={20} color={"blue"} />
+            <Ionicons name="star-outline" size={20} color="blue" />
           )}
         </Pressable>
       </View>
@@ -53,30 +59,3 @@ const TaskItem = ({
 };
 
 export default TaskItem;
-
-const styles = StyleSheet.create({
-  taskCard: {
-    padding: 15,
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    marginBottom: 10,
-    borderRadius: 5,
-    shadowRadius: 5,
-    elevation: 6,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  btnDelete: {
-    backgroundColor: "#fff",
-    padding: 8,
-  },
-  btnPressed: {
-    backgroundColor: "rgba(255,0,0,0.1)",
-    padding: 8,
-    borderRadius: 20,
-    borderColor: "red",
-  },
-});

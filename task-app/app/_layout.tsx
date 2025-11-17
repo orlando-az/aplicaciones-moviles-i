@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Slot, Stack } from "expo-router";
 import "../global.css";
 import { Text } from "react-native";
 
@@ -19,17 +19,18 @@ const RootLayout = () => {
     //     }}
     //   />
     // </Stack>
-    <Stack>
-      <Stack.Screen
-        name="(tabs)"
-        options={{
-          headerTitle: () => (
-            <Text className="text-2xl text-green-500 font-bold">TASK APP</Text>
-          ),
-          headerShadowVisible: false,
-        }}
-      />
-    </Stack>
+    // <Stack>
+    //   <Stack.Screen
+    //     name="(tabs)"
+    //     options={{
+    //       headerTitle: () => (
+    //         <Text className="text-2xl text-green-500 font-bold">TASK APP</Text>
+    //       ),
+    //       headerShadowVisible: false,
+    //     }}
+    //   />
+    // </Stack>
+    <Slot />
   );
 };
 
