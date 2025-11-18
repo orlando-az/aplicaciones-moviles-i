@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, TouchableOpacity } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -10,6 +10,7 @@ interface ItemTaskProps {
   onDelete: () => void;
   onToggleImportant: () => void;
   onToggleDone: () => void;
+  onPress: () => void;
 }
 
 const TaskItem = ({
@@ -18,9 +19,13 @@ const TaskItem = ({
   onDelete,
   onToggleImportant,
   onToggleDone,
+  onPress,
 }: ItemTaskProps) => {
   return (
-    <View className="p-4 bg-white mb-3 rounded-md shadow-md flex-row justify-between items-center">
+    <Pressable
+      onPress={onPress}
+      className="p-4 bg-white mb-3 rounded-md shadow-md flex-row justify-between items-center"
+    >
       <View className="flex-row items-center gap-3">
         <Pressable onPress={onToggleDone}>
           {task.done ? (
@@ -54,7 +59,7 @@ const TaskItem = ({
           )}
         </Pressable>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
