@@ -7,7 +7,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { create, Task } from "../../../types/task";
+import { Task } from "../../../types/task";
 import TaskItem from "../../../components/TaskItem";
 import useTasks from "../../../hooks/useTasks";
 import { router } from "expo-router";
@@ -37,7 +37,7 @@ const Index = () => {
         onDelete={() => handleDeleteTask(item.id)}
         onToggleImportant={() => handleToggleImportant(item.id)}
         onToggleDone={() => handleToggleDone(item.id)}
-        onPress={() => router.push("../../task/[id].tsx")}
+        onPress={() => router.push(`../../task/${item.id}`)}
       />
     );
   };
@@ -50,7 +50,7 @@ const Index = () => {
         onDelete={() => handleDeleteTask(item.id)}
         onToggleImportant={() => handleToggleImportant(item.id)}
         onToggleDone={() => handleToggleDone(item.id)}
-        onPress={() => router.push("../../task/[id].tsx")}
+        onPress={() => router.push(`../../task/${item.id}`)}
       />
     );
   };

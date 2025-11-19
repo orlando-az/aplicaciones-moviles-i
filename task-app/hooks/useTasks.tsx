@@ -1,28 +1,37 @@
 import { useState } from "react";
-import { create, Task } from "../types/task";
+import { Task } from "../types/task";
+import { useTaskStore } from "../store/useTaskStore";
 
 const useTasks = () => {
   const [newTask, setNewTask] = useState("");
-  const [tasks, setTasks] = useState<Task[]>([]);
+  // const [tasks, setTasks] = useState<Task[]>([]);
   const [tasksCompleted, setTasksCompleted] = useState<Task[]>([]);
+  const { tasks, setTasks, addTask } = useTaskStore();
 
   const handleAddTask = () => {
     if (newTask.trim() === "") {
       window.alert("La tarea no puede estar vacía");
       return;
     }
-    setTasks((prev) => [...prev, create(newTask)]);
+    // setTasks((prev) => [...prev, create(newTask)]);
+    addTask(newTask);
     setNewTask("");
   };
 
   const handleDeleteTask = (id: string) => {
-    setTasks((prev) => prev.filter((t) => t.id !== id));
+    // setTasks((prev) => prev.filter((t) => t.id !== id));
+    setTasks(tasks.filter((t) => t.id !== id));
     setTasksCompleted((prev) => prev.filter((t) => t.id !== id));
   };
 
   const handleToggleImportant = (id: string) => {
-    setTasks((prev) =>
-      prev.map((item) =>
+    // setTasks((prev) =>
+    //   prev.map((item) =>
+    //     item.id === id ? { ...item, important: !item.important } : item
+    //   )
+    // );
+    setTasks(
+      tasks.map((item) =>
         item.id === id ? { ...item, important: !item.important } : item
       )
     );
@@ -39,7 +48,8 @@ const useTasks = () => {
 
     if (inActive) {
       const updated = { ...inActive, done: true };
-      setTasks((prev) => prev.filter((t) => t.id !== id));
+      // setTasks((prev) => prev.filter((t) => t.id !== id));
+      setTasks(tasks.filter((t) => t.id !== id));
       setTasksCompleted((prev) => [updated, ...prev]);
       return;
     }
@@ -47,7 +57,8 @@ const useTasks = () => {
     if (inCompleted) {
       const updated = { ...inCompleted, done: false };
       setTasksCompleted((prev) => prev.filter((t) => t.id !== id));
-      setTasks((prev) => [updated, ...prev]);
+      // setTasks((prev) => [updated, ...prev]);
+      setTasks([updated, ...tasks]);
       return;
     }
   };

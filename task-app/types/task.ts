@@ -6,7 +6,7 @@ export interface Task {
   createdAt: Date;
 }
 
-export const create = (text: string): Task => ({
+export const createTask = (text: string): Task => ({
   id: crypto.randomUUID(),
   text,
   done: false,
