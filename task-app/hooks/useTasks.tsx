@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Task } from "../types/task";
 import { useTaskStore } from "../store/useTaskStore";
 
@@ -6,15 +6,19 @@ const useTasks = () => {
   const [newTask, setNewTask] = useState("");
   // const [tasks, setTasks] = useState<Task[]>([]);
   const [tasksCompleted, setTasksCompleted] = useState<Task[]>([]);
-  const { tasks, setTasks, addTask } = useTaskStore();
+  const { tasks, setTasks, addTask, loadTask } = useTaskStore();
 
-  const handleAddTask = () => {
+  useEffect(() => {
+    loadTask();
+  }, []);
+
+  const handleAddTask = async () => {
     if (newTask.trim() === "") {
       window.alert("La tarea no puede estar vacía");
       return;
     }
     // setTasks((prev) => [...prev, create(newTask)]);
-    addTask(newTask);
+    await addTask(newTask);
     setNewTask("");
   };
 
