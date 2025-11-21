@@ -6,6 +6,9 @@ type TaskStore = {
   tasks: Task[];
   loadTask: () => Promise<void>;
   addTask: (text: string) => Promise<void>;
+  toggleDone: (id: number) => Promise<void>;
+  toggleImportant: (id: number) => Promise<void>;
+  deleteTask: (id: number) => Promise<void>;
   setTasks: (tasks: Task[]) => void;
 };
 
@@ -49,5 +52,57 @@ export const useTaskStore = create<TaskStore>((set) => ({
       console.error("Excepcion al agregar", error);
     }
   },
+  toggleDone: async (id: number) => {
+    try {
+      const currentTask = useTaskStore
+        .getState()
+        .tasks.find((t) => t.id === id);
+
+      if (!currentTask) return;
+      const { error } = await supabase
+        .from("task")
+        .update({ done: !currentTask.done })
+        .eq("id", id);
+
+      if (error) {
+        console.error("Error al actualizar:", error);
+        return;
+      }
+      set((state) => ({
+        tasks: state.tasks.map((t) =>
+          t.id === id ? { ...t, done: !t.done } : t
+        ),
+      }));
+    } catch (error) {
+      console.error("Excepción al actualizar:", error);
+    }
+  },
+  toggleImportant: async (id: number) => {
+    try {
+      const currentTask = useTaskStore
+        .getState()
+        .tasks.find((t) => t.id === id);
+
+      if (!currentTask) return;
+      const { error } = await supabase
+        .from("task")
+        .update({ important: !currentTask.important })
+        .eq("id", id);
+
+      if (error) {
+        console.error("Error al actualizar:", error);
+        return;
+      }
+      set((state) => ({
+        tasks: state.tasks.map((t) =>
+          t.id === id ? { ...t, important: !t.important } : t
+        ),
+      }));
+    } catch (error) {
+      console.error("Excepción al actualizar:", error);
+    }
+  },
+
+  deleteTask: async (id: number) => {},
   setTasks: (tasks) => ({ tasks }),
 }));

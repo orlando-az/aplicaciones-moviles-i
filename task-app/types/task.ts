@@ -1,5 +1,5 @@
 export interface Task {
-  id: string;
+  id?: number;
   text: string;
   done: boolean;
   important?: boolean;
@@ -7,7 +7,6 @@ export interface Task {
 }
 
 export const createTask = (text: string): Task => ({
-  id: crypto.randomUUID(),
   text,
   done: false,
   important: false,

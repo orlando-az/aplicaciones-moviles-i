@@ -4,9 +4,12 @@ import { useTaskStore } from "../store/useTaskStore";
 
 const useTasks = () => {
   const [newTask, setNewTask] = useState("");
-  // const [tasks, setTasks] = useState<Task[]>([]);
-  const [tasksCompleted, setTasksCompleted] = useState<Task[]>([]);
-  const { tasks, setTasks, addTask, loadTask } = useTaskStore();
+
+  const { tasks, setTasks, addTask, loadTask, toggleDone, toggleImportant } =
+    useTaskStore();
+
+  const tasksCompleted = tasks.filter((t) => t.done);
+  const activeTasks = tasks.filter((t) => !t.done);
 
   useEffect(() => {
     loadTask();
@@ -17,54 +20,21 @@ const useTasks = () => {
       window.alert("La tarea no puede estar vacía");
       return;
     }
-    // setTasks((prev) => [...prev, create(newTask)]);
+
     await addTask(newTask);
     setNewTask("");
   };
 
-  const handleDeleteTask = (id: string) => {
-    // setTasks((prev) => prev.filter((t) => t.id !== id));
+  const handleDeleteTask = (id: number) => {
     setTasks(tasks.filter((t) => t.id !== id));
-    setTasksCompleted((prev) => prev.filter((t) => t.id !== id));
   };
 
-  const handleToggleImportant = (id: string) => {
-    // setTasks((prev) =>
-    //   prev.map((item) =>
-    //     item.id === id ? { ...item, important: !item.important } : item
-    //   )
-    // );
-    setTasks(
-      tasks.map((item) =>
-        item.id === id ? { ...item, important: !item.important } : item
-      )
-    );
-    setTasksCompleted((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, important: !item.important } : item
-      )
-    );
+  const handleToggleImportant = async (id: number) => {
+    await toggleImportant(id);
   };
 
-  const handleToggleDone = (id: string) => {
-    const inActive = tasks.find((t) => t.id === id);
-    const inCompleted = tasksCompleted.find((t) => t.id === id);
-
-    if (inActive) {
-      const updated = { ...inActive, done: true };
-      // setTasks((prev) => prev.filter((t) => t.id !== id));
-      setTasks(tasks.filter((t) => t.id !== id));
-      setTasksCompleted((prev) => [updated, ...prev]);
-      return;
-    }
-
-    if (inCompleted) {
-      const updated = { ...inCompleted, done: false };
-      setTasksCompleted((prev) => prev.filter((t) => t.id !== id));
-      // setTasks((prev) => [updated, ...prev]);
-      setTasks([updated, ...tasks]);
-      return;
-    }
+  const handleToggleDone = async (id: number) => {
+    await toggleDone(id);
   };
   return {
     handleAddTask,
@@ -73,6 +43,7 @@ const useTasks = () => {
     handleToggleImportant,
     tasks,
     tasksCompleted,
+    activeTasks,
     newTask,
     setNewTask,
   };
